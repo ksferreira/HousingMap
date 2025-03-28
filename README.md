@@ -18,7 +18,7 @@ Team Member List:
     Issue 3 : Map Integration
   Daniel Kennedy - Role: Assigment Aggregator
     Issue 1 : About Page
-    Issue 2 : Slide Deck Group/Idnividual
+    Issue 2 : Slide Deck Group/Individual
     Issue 3 : Milestone 5 Issue setup
   John Hankwitz- Role: Quality Assurance
     Issue 1 : Contact Page
