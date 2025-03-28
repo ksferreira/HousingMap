@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Housing Map</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">HousingMap</div>
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search location...">
+        </div>
+        <div class="nav-links">
+            <a href="../index.html" class="nav-btn">Home</a>
+            <a href="../pages/about.html" class="nav-btn">About</a>
+            <a href="#" class="nav-btn">Contact</a>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Location Details</h2>
+            </div>
+            <div class="sidebar-content">
+                <div class="info-card">
+                    <h3>Selected Area</h3>
+                    <p>No area selected</p>
+                </div>
+                <div class="info-card">
+                    <h3>Statistics</h3>
+                    <p>Loading...</p>
+                </div>
+                <div class="info-card">
+                    <h3>Recent Searches</h3>
+                    <ul>
+                        <li>New York, NY</li>
+                        <li>Los Angeles, CA</li>
+                        <li>Chicago, IL</li>
+                    </ul>
+                </div>
+            </div>
+        </aside>
+
+        <main class="map-container">
+            <div class="map-view">
+                <!-- Map will be embedded here -->
+            </div>
+        </main>
+    </div>
+</body>
+</html>
