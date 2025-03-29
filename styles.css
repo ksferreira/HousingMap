@@ -1,3 +1,4 @@
+
 :root {
     --primary-color: #f5ad1c;
     --secondary-color: #1c7af5;
@@ -218,4 +219,3 @@ body {
     .map-container {
         height: calc(100vh - 370px);
     }
-}
