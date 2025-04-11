@@ -52,6 +52,35 @@ body {
     position: relative;
 }
 
+.search-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    margin-top: 4px;
+    box-shadow: var(--shadow);
+    display: none;
+    z-index: 1001;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.suggestion-item {
+    padding: var(--spacing-sm) var(--spacing-md);
+    cursor: pointer;
+    transition: background-color 0.2s;
+    color: var(--text-color);
+    font-size: 0.9rem;
+}
+
+.suggestion-item:hover {
+    background-color: var(--bg-light);
+}
+
+
 .search-input {
     width: 100%;
     padding: var(--spacing-sm) var(--spacing-md);
