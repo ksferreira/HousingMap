@@ -16,9 +16,23 @@ document.addEventListener('DOMContentLoaded', function() {
         const data = await response.json();
         return data;
     }
-
     let timeout;
+    const favorite = document.querySelector(".fav");
+    favorite.addEventListener('click', function(){
+        if(document.querySelector('.info-card:first-child p').textContent !== "No area selected"){
+            //let newFave = document.querySelector('.info-card:first-child p').textContent.slice(47, 111).split(", ");
+            let newFave = document.querySelector('.info-card:first-child p').textContent.slice(47, 
+                document.querySelector('.info-card:first-child p').textContent.indexOf("\n", 47));
 
+            if(localStorage.getItem("total")){
+                let total = parseInt(localStorage.getItem("total"))
+                localStorage.setItem("total", ++total)
+            }else{
+                localStorage.setItem("total", 1)
+            }
+            localStorage.setItem(JSON.parse(localStorage.getItem("total")), newFave);
+        }
+    })
     searchInput.addEventListener('input', function() {
         
         if (timeout) clearTimeout(timeout);
