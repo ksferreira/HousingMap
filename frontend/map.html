@@ -12,7 +12,8 @@
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin=""></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
-    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js">
+    </script>
 </head>
 <body>
     <nav class="navbar">
@@ -21,16 +22,19 @@
             <input type="text" class="search-input" placeholder="Search location...">
         </div>
         <div class="nav-links">
-            <a href="../index.html" class="nav-btn">Home</a>
+            <a href="index.html" class="nav-btn">Home</a>
+            <a href="compare.html" class="nav-btn">Comparison</a>
+            <a href="list.html" class="nav-btn">Favorites</a>
             <a href="about.html" class="nav-btn">About</a>
-            <a href="#" class="nav-btn">Contact</a>
+            <a href="contact.html" class="nav-btn">Contact</a>
         </div>
     </nav>
 
     <div class="dashboard-container">
         <aside class="sidebar">
-            <div class="sidebar-header">
+            <div class="sidebar-header" style="display: flex; justify-content: space-between;">
                 <h2>Location Details</h2>
+                <button class="fav" id="favbutton">Favorite</button>
             </div>
             <div class="sidebar-content">
                 <div class="info-card">
