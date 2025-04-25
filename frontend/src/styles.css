@@ -44,6 +44,12 @@ body {
     color: var(--white);
 }
 
+.container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
 .search-container {
     display: flex;
     gap: var(--spacing-sm);

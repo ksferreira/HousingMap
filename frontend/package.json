@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "Project for CS 326",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-server ./src -p 8000"
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/ksferreira/HousingMap/issues"
   },
-  "homepage": "https://github.com/ksferreira/HousingMap#readme"
+  "homepage": "https://github.com/ksferreira/HousingMap#readme",
+  "dependencies": {
+    "http-server": "^14.1.1"
+  }
 }
