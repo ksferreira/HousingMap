@@ -5,10 +5,15 @@ class FavRoutes {
         this.router = express.Router();
         this.initializeRoutes();
     }
-    //change stuf
     initializeRoutes() {
-        this.router.get('/base-stats', async (req, res) => {
-            const stats = await StatsController.getBaseStats();
+        this.router.get('/favs', async (req, res) => {
+            const favs = await FavController.getAllFavs();
+        });
+        this.router.get('/remove-favs', async (req, res) => {
+            const removeFav = await FavController.clearFavs();
+        });
+        this.router.get('/add-fav', async (req, res) => {
+            const addFav = await FavController.addFav();
         });
     }
     
@@ -17,4 +22,4 @@ class FavRoutes {
     }
 }
 
-export default new StatRoutes().getRouter();
+export default new FavRoutes().getRouter();
