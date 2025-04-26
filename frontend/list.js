@@ -4,12 +4,10 @@ document.addEventListener('DOMContentLoaded', function() {
         total = parseInt(localStorage.getItem("total"));
     }
     for(let i = 1; i <= total; i++){
-        let temp = localStorage.getItem(i)
-        console.log(temp)
         let list = document.createElement("div");
-        list.class = "compare-container";
+        list.className += " compare-container";
         let inner = document.createElement("div");
-        inner.class = "list";
+        inner.className += "list";
         inner.textContent = localStorage.getItem(i);
         list.appendChild(inner);
         document.getElementById("list-container").appendChild(list);

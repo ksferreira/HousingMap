@@ -20,7 +20,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const favorite = document.querySelector(".fav");
     favorite.addEventListener('click', function(){
         if(document.querySelector('.info-card:first-child p').textContent !== "No area selected"){
+                // Publish a 'NewTask' event with the task and file data
+
+                let newFave = document.querySelector('.info-card:first-child p').textContent.slice(47, 
+                document.querySelector('.info-card:first-child p').textContent.indexOf("\n", 47));
+
+                const hub = EventHub.getInstance();
+                hub.publish(Events.NewFav, {newFav});
+                hub.publish(Events.StoreFav, {newFav});
+
             //let newFave = document.querySelector('.info-card:first-child p').textContent.slice(47, 111).split(", ");
+
+
             let newFave = document.querySelector('.info-card:first-child p').textContent.slice(47, 
                 document.querySelector('.info-card:first-child p').textContent.indexOf("\n", 47));
 

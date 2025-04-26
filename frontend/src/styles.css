@@ -319,7 +319,6 @@ body {
 }
 
 .list {
-    height: 300px;
     display: flex;
     justify-content: space-evenly;
     padding: var(--spacing-xl);
