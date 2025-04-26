@@ -23,35 +23,24 @@
         </nav>
         </div>
         <div class="compare-container">
-        <div class="selectbar">
-            <div>
-                Option 1
+            <div class="selectbar">
+                <select class="option1" id="o1">
+                    <option value="">  Select1  </option>
+                </select>
+                <select class="option2" id="o2">
+                    <option value="">  Select2  </option>
+                </select>
             </div>
-            <div>
-                Option 2
-            </div>
-        </div>
-        <div class="compare">
-            <div style="flex: display; flex-direction: row;">
-                <div class="stat">
-                    Left -  Stat 1
+            <div style="flex: display; flex-direction: row;" class="compare">
+                <div class="left" id="cl">
                 </div>
-                <div class="stat">
-                    Left - Stat 2
-                </div>
-            </div>
-            <div style="flex: display; flex-direction: row;">
-                <div class="stat">
-                    Right - Stat 1
-                </div>
-                <div class="stat">
-                    Right - Stat 2
+                <div class="right" id="cr">
                 </div>
             </div>
         </div>
-    </div>
         <div>
             <img src="UMassMark.png" class="mark"/>
         </div>
+        <script src="compare.js" defer></script>
     </body>
 </html>
