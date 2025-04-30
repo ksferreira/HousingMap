@@ -1,9 +1,12 @@
+import { EventHub } from '../../events/EventHub.js';
 
 export class AppControllerComponent {
     #container = null;
 
     constructor() {
-        super();
+        this.#createContainer();
+        this.#setupContainerContent();
+        this.#attachEventListeners();
     }
 
     render() {
@@ -22,7 +25,7 @@ export class AppControllerComponent {
     }
 
     #setupContainerContent() {
-        this.element.innerHTML = `
+        this.#container.innerHTML = `
             <div class="hero">
                 <h1>Housing Map</h1>
                 <p>Find your perfect home with ease</p>
@@ -39,7 +42,7 @@ export class AppControllerComponent {
             
         });
 
-        const launchMapButton = this.element.querySelector('.btn');
+        const launchMapButton = this.#container.querySelector('.btn');
         launchMapButton.addEventListener('click', () => {
             hub.publish('LaunchMap', {});
         });
