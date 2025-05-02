@@ -1,3 +1,4 @@
+import './styles.css';
 import { AppControllerComponent } from './components/AppControllerComponent/AppControllerComponent.js';
 
 const appControllerComponent = new AppControllerComponent();
