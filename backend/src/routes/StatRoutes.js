@@ -1,4 +1,5 @@
 import express from 'express';
+import StatsController from '../controller/StatsController.js';
 
 class StatRoutes {
     constructor() {
@@ -8,7 +9,14 @@ class StatRoutes {
 
     initializeRoutes() {
         this.router.get('/base-stats', async (req, res) => {
-            const stats = await StatsController.getBaseStats();
+            try {
+                await StatsController.getBaseStats(req, res);
+            } catch (error) {
+                console.error('Error fetching base stats: ', error);
+                if (!res.headersSent) {
+                    res.status(500).json({ error: 'An error occurred while fetching stats' });
+                }
+            }
         });
     }
     
