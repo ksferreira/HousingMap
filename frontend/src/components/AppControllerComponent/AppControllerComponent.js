@@ -1,12 +1,17 @@
 import { EventHub } from '../../events/EventHub.js';
+import { MapComponent } from '../MapComponent/MapComponent.js';
 
 export class AppControllerComponent {
     #container = null;
-
+    #mapComponent = null;
+    #hub = null;
     constructor() {
+        this.#hub = EventHub.getInstance();
         this.#createContainer();
         this.#setupContainerContent();
         this.#attachEventListeners();
+
+        this.#mapComponent = new MapComponent();
     }
 
     render() {
@@ -20,8 +25,7 @@ export class AppControllerComponent {
 
     #createContainer() {
         this.#container = document.createElement('div');
-        this.#container.classList.add('hero-container');
-        this.#container.setAttribute('id', 'app-controller-container');
+        this.#container.setAttribute('class', 'app-controller-container');
     }
 
     #setupContainerContent() {
@@ -35,18 +39,32 @@ export class AppControllerComponent {
     }
 
     #attachEventListeners() {
-        const hub = EventHub.getInstance();
-
-        hub.subscribe('LaunchMap', taskData => {
-            console.log(taskData);
-            
+        this.#hub.subscribe('LaunchMap', taskData => {
+            this.#launchMap();
         });
 
         const launchMapButton = this.#container.querySelector('.btn');
         launchMapButton.addEventListener('click', () => {
-            hub.publish('LaunchMap', {});
+            this.#hub.publish('LaunchMap', {});
         });
-
     }
 
+    #launchMap() {
+        console.log('Launching map');
+
+        // Clear the container
+        this.#container.innerHTML = '';
+        
+        // Add the map view class to the container
+        this.#container.classList.add('map-view');
+        
+        // Append the map component
+        const mapElement = this.#mapComponent.render();
+        this.#container.appendChild(mapElement);
+        
+        // Force a resize after a short delay to ensure Leaflet initializes properly
+        setTimeout(() => {
+            window.dispatchEvent(new Event('resize'));
+        }, 200);
+    }
 }
