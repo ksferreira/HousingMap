@@ -1,8 +1,13 @@
+import { BaseComponent } from '../BaseComponent/BaseComponent.js';
+import {TownStatsService} from '../../../../backend/src/services/TownStatsService.js'
 export class CompareComponent extends BaseComponent {
     #container = null;
-    
+    #favs = ["Ex1", "Ex2", "Ex3"]; //To store favorites
+    #townStatsService  = null;
+
     constructor() {
         super();
+        this.#townStatsService = new TownStatsService();
     }
 
     render() {
@@ -10,8 +15,9 @@ export class CompareComponent extends BaseComponent {
 
         this.#createContainer();
         this.#setupContainerContent();
-        this.#attachEventListeners();
-
+        //this.#attachEventListeners();
+        console.log("ren")
+        console.log(this.#townStatsService.fetchFreshStats("Northfield", "MA"))
         return this.#container;
     }
     
@@ -21,14 +27,16 @@ export class CompareComponent extends BaseComponent {
     }
     
     #setupContainerContent() {
-        this.element.innerHTML = `
-        div class="compare-container">
+        let options = this.#favs.reduce((a, c) => {return a + "<option>"+c+"</option>";}, "")
+        this.#container.innerHTML = `
         <div class="selectbar">
-            <select class="option1" id="o1">
-                <option value="">  Select1  </option>
+            <select class="option" id="o1">
+                <option value="">  Select  </option>
+                `+options+`
             </select>
-            <select class="option2" id="o2">
-                <option value="">  Select2  </option>
+            <select class="option" id="o2">
+                <option value="">  Select  </option>
+                `+options+`
             </select>
         </div>
         <div style="flex: display; flex-direction: row;" class="compare">
