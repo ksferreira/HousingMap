@@ -1,8 +1,9 @@
 import { BaseComponent } from '../BaseComponent/BaseComponent.js';
-
+import { EventHub } from '../../events/EventHub.js';
+import { Events } from '../../events/Events.js';
 export class ListComponent extends BaseComponent {
     #container = null;
-    #favs = ["Ex1", "Ex2", "Ex3"]; //To store favorites
+    #favs = []; //To store favorites
     constructor() {
         super();
     }
@@ -13,11 +14,15 @@ export class ListComponent extends BaseComponent {
         this.#createContainer();
         this.#setupContainerContent();
         this.#renderTasks();
-        //this.#attachEventListeners();
+        this.#attachEventListeners();
 
         return this.#container;
     }
-    
+    setFavs(favs) {
+      this.#favs = favs;
+      this.#renderTasks();
+    }
+
     #createContainer() {
         this.#container = document.createElement('div');
         this.#container.classList.add('list-container');
@@ -35,13 +40,36 @@ export class ListComponent extends BaseComponent {
     #renderTasks() {
         //  const favList = this.#container.querySelector('#outer');
         //  favList.innerHTML = ''; // Clear existing content
-
+        let total = 0
+        if(localStorage.getItem("total")){
+        total = parseInt(localStorage.getItem("total"));
+        }
+        for(let i = 1; i <= total; i++){
+          this.#favs.push(JSON.parse(localStorage.getItem(i)));
+          
+        }
         this.#favs.forEach(favData => {
             let list = document.createElement("div");
             list.className += "compare-container";
             let inner = document.createElement("div");
             inner.className += "list";
-            inner.textContent = favData;
+            if(favData){
+              let stateSt = "";
+              let townSt = "";
+              if(favData.town !== undefined){
+                townSt=favData.town
+              }
+              if(favData.normalizedTown  !== undefined){
+                townSt=favData.normalizedTown
+              }
+              if(favData.state  !== undefined){
+                stateSt=favData.state
+              }
+              if(favData.normalizedState  !== undefined){
+                stateSt=favData.normalizedState
+              }
+            inner.textContent = townSt+", "+stateSt;
+            }
             list.appendChild(inner);
             this.#container.appendChild(list);
         });
@@ -49,7 +77,6 @@ export class ListComponent extends BaseComponent {
     
       // Attaches the event listeners to the component
       #attachEventListeners() {
-        const backToMainViewBtn = this.#container.querySelector('#backToMainViewBtn');
         const hub = EventHub.getInstance();
         hub.subscribe(Events.NewFav, (favData) => {
           this.#favs.push(favData);      
@@ -63,3 +90,4 @@ export class ListComponent extends BaseComponent {
       }
 
 }
+
