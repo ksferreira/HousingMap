@@ -50,6 +50,27 @@ class CensusService {
         }
     }
 
+    async getStatsByLocation(lat, lon) {
+        try {
+            const nominatimUrl = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
+            const response = await axios.get(nominatimUrl, {
+                headers: { 'User-Agent': 'HousingMap/1.0)' }
+            });
+            const address = response.data.address;
+
+            const town = address.town || address.city || address.village || address.hamlet;
+            const state = address.state;
+            if (!town || !state) {
+                return { exists: false, error: 'Could not determine town or state from coordinates' };
+            }
+
+            return await this.getTownStats(town, state);
+        } catch (error) {
+            console.error('Error in getStatsByLatLon:', error);
+            return { exists: false, error: error.message };
+        }
+    }
+
     async #getGeographicData(town, state) {
         try {
             const stateCode = state.toUpperCase();
