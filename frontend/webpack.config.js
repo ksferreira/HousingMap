@@ -34,6 +34,14 @@ export default {
     static: {
       directory: path.join(__dirname, 'dist'),
     },
+    open: true,
     hot: true,
+    proxy: [
+      {
+        context: ['/api', '/v1'],
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+      }
+    ],
   },
 };
