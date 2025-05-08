@@ -1,4 +1,6 @@
 import { BaseComponent } from '../BaseComponent/BaseComponent.js';
+import { Events } from '../../events/Events.js';
+import { EventHub } from '../../events/EventHub.js';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -6,9 +8,11 @@ export class MapComponent extends BaseComponent {
     #container = null;
     #map = null;
     #suggestionsContainer = null;
-
+    #sidebar = null;
+    #hub = null;
     constructor() {
         super();
+        this.#hub = EventHub.getInstance();
     }
 
     render() {
@@ -16,7 +20,6 @@ export class MapComponent extends BaseComponent {
 
         this.#createContainer();
         this.#setupContainerContent();
-        
         this.#waitForElementAndInitialize();
         
         return this.#container;
@@ -136,51 +139,7 @@ export class MapComponent extends BaseComponent {
                         const div = document.createElement('div');
                         div.className = 'suggestion-item';
                         div.textContent = result.display_name;
-                        div.addEventListener('click', async () => {
-                            input.value = result.display_name;
-                            this.#suggestionsContainer.style.display = 'none';
-
-                            const latlng = [parseFloat(result.lat), parseFloat(result.lon)];
-                            
-              
-                            
-                            try {
-                                const response = await fetch(`https://nominatim.openstreetmap.org/lookup?osm_ids=${result.osm_type[0].toUpperCase()}${result.osm_id}&format=geojson&polygon_geojson=1&admin_level=8`);
-                                const geojsonData = await response.json();
-                                
-                                const selectedAreaCard = document.querySelector('.info-card:first-child p');
-                                if (selectedAreaCard) {
-                                    selectedAreaCard.innerHTML = `
-                                        <strong>Location:</strong> ${result.display_name}<br>
-                                    `;
-                                }
-
-                                if (window.geojsonLayer) {
-                                    this.#map.removeLayer(window.geojsonLayer);
-                                }
-                                window.geojsonLayer = L.geoJSON(geojsonData, {
-                                    style: function(feature) {
-                                        return {
-                                            color: '#3388ff',
-                                            weight: 2,
-                                            opacity: 1,
-                                            fillOpacity: 0.2,
-                                            fillColor: '#3388ff'
-                                        };
-                                    },
-                                    onEachFeature: function(feature, layer) {
-                                        if (feature.properties && feature.properties.name) {
-                                            layer.bindPopup(feature.properties.name);
-                                        }
-                                    }
-                                }).addTo(this.#map);
-
-                                this.#map.fitBounds(window.geojsonLayer.getBounds());
-                            } catch (error) {
-                                console.error('Error fetching GeoJSON:', error);
-                            }
-                        });
-
+                        div.addEventListener('click', this.#handleSuggestionClick.bind(this, input, result));
                         this.#suggestionsContainer.appendChild(div);
                     });
                 } else {
@@ -199,11 +158,65 @@ export class MapComponent extends BaseComponent {
     }
 
     #attachEventListeners() {
-        // Ensure the map is redrawn when the window resizes
-        window.addEventListener('resize', () => {
-            if (this.#map) {
-                this.#map.invalidateSize();
+        window.addEventListener('resize', () => this.#map.invalidateSize());
+
+        this.#hub.subscribe(Events.SearchLocation, async (data) => {
+            const { lat, lon } = data;
+            console.log(data);
+            
+
+            try {
+                const res = await fetch(`/v1/base-stats?lat=${lat}&lon=${lon}`);
+                const data = await res.json();
+                // console.log(data);
+                this.#hub.publish(Events.SearchLocationSuccess, data);
+            } catch (error) {
+                console.error('Error fetching base stats:', error);
+                this.#hub.publish(Events.SearchLocationError, {
+                    exists: false,
+                    error: error.message,
+                });
             }
         });
+    }
+
+    async #handleSuggestionClick(input, result) {
+        this.#hub.publish(Events.SearchLocation, {
+            location: result.display_name,
+            lat: result.lat,
+            lon: result.lon,
+        });
+
+        input.value = result.display_name;
+        this.#suggestionsContainer.style.display = 'none';
+
+        const latlng = [parseFloat(result.lat), parseFloat(result.lon)];
+        try {
+            const response = await fetch(`https://nominatim.openstreetmap.org/lookup?osm_ids=${result.osm_type[0].toUpperCase()}${result.osm_id}&format=geojson&polygon_geojson=1&admin_level=8`);
+            const geojsonData = await response.json();
+            if (window.geojsonLayer) {
+                this.#map.removeLayer(window.geojsonLayer);
+            }
+            window.geojsonLayer = L.geoJSON(geojsonData, {
+                style: function(feature) {
+                    return {
+                        color: '#3388ff',
+                        weight: 2,
+                        opacity: 1,
+                        fillOpacity: 0.2,
+                        fillColor: '#3388ff'
+                    };
+                },
+                onEachFeature: function(feature, layer) {
+                    if (feature.properties && feature.properties.name) {
+                        layer.bindPopup(feature.properties.name);
+                    }
+                }
+            }).addTo(this.#map);
+
+            this.#map.fitBounds(window.geojsonLayer.getBounds());
+        } catch (error) {
+            console.error('Error fetching GeoJSON:', error);
+        }
     }
 } 
