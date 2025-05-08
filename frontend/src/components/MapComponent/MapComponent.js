@@ -92,29 +92,12 @@ export class MapComponent extends BaseComponent {
         searchInput.parentNode.appendChild(this.#suggestionsContainer);
 
         let timeout;
-        const favorite = document.querySelector(".fav");
-        if (favorite) {
-            favorite.addEventListener('click', this.#handleFavoriteClick.bind(this));
-        }
+
 
         searchInput.addEventListener('input', this.#handleSearchInput.bind(this));
     }
 
-    #handleFavoriteClick() {
-        if(document.querySelector('.info-card:first-child p').textContent !== "No area selected"){
-            //let newFave = document.querySelector('.info-card:first-child p').textContent.slice(47, 111).split(", ");
-            let newFave = document.querySelector('.info-card:first-child p').textContent.slice(47, 
-                document.querySelector('.info-card:first-child p').textContent.indexOf("\n", 47));
 
-            if(localStorage.getItem("total")){
-                let total = parseInt(localStorage.getItem("total"))
-                localStorage.setItem("total", ++total)
-            }else{
-                localStorage.setItem("total", 1)
-            }
-            localStorage.setItem(JSON.parse(localStorage.getItem("total")), newFave);
-        }
-    }
 
     async #handleSearchInput(event) {
         const input = event.target;
