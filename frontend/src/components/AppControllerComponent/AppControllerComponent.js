@@ -1,10 +1,14 @@
 import { EventHub } from '../../events/EventHub.js';
 import { MapComponent } from '../MapComponent/MapComponent.js';
-
+import { SidebarComponent } from '../SidebarComponent/SidebarComponent.js';
 export class AppControllerComponent {
     #container = null;
     #mapComponent = null;
     #hub = null;
+
+    #sidebarLeftComponent = null;
+    #sidebarRightComponent = null;
+
     constructor() {
         this.#hub = EventHub.getInstance();
         this.#createContainer();
@@ -12,6 +16,14 @@ export class AppControllerComponent {
         this.#attachEventListeners();
 
         this.#mapComponent = new MapComponent();
+        this.#sidebarLeftComponent = new SidebarComponent({
+            position: 'left',
+            data: null
+        });
+        this.#sidebarRightComponent = new SidebarComponent({
+            position: 'right',
+            data: null
+        });
     }
 
     render() {
@@ -52,16 +64,26 @@ export class AppControllerComponent {
     #launchMap() {
         console.log('Launching map');
 
-        // Clear the container
         this.#container.innerHTML = '';
-        
-        // Add the map view class to the container
+        this.#container.className = '';
+        this.#container.classList.add('dashboard-container');
         this.#container.classList.add('map-view');
-        
-        // Append the map component
+
+        // Left sidebar
+        const sidebarLeftElement = this.#sidebarLeftComponent.render();
+        this.#container.appendChild(sidebarLeftElement);
+
+        // Map container
+        const mapContainer = document.createElement('main');
+        mapContainer.className = 'map-container';
         const mapElement = this.#mapComponent.render();
-        this.#container.appendChild(mapElement);
-        
+        mapContainer.appendChild(mapElement);
+        this.#container.appendChild(mapContainer);
+
+        // // Right sidebar
+        // const sidebarRightElement = this.#sidebarRightComponent.render();
+        // this.#container.appendChild(sidebarRightElement);
+
         // Force a resize after a short delay to ensure Leaflet initializes properly
         setTimeout(() => {
             window.dispatchEvent(new Event('resize'));
