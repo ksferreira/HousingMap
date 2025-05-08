@@ -95,5 +95,28 @@ export class SidebarComponent extends BaseComponent {
         this.#hub.subscribe(Events.SearchLocationError, (data) => {
             this.#data = data;
         });
+                this.#hub.subscribe('SavFav', taskData => {
+            this.#SavFav();
+        });
+        const favButton =  this.#container.querySelector('.fav');;
+        favButton.addEventListener('click', () => {
+            this.#hub.publish('SavFav', {});
+        });
+    }
+    #SavFav() {
+        if(this.#data !== null && this.#data.exists){
+        console.log('Saving Favorite');
+        if(localStorage.getItem("total")){
+            let total = parseInt(localStorage.getItem("total"))
+            localStorage.setItem("total", ++total)
+        }else{
+            localStorage.setItem("total", 1)
+        }
+        
+        localStorage.setItem(JSON.parse(localStorage.getItem("total")), JSON.stringify(this.#data));
+        }
+        const hub = EventHub.getInstance();
+        hub.publish(Events.NewFav, this.#data);
+        hub.publish(Events.StoreFav, this.#data );
     }
 }
