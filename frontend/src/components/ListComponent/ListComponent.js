@@ -1,6 +1,8 @@
-export class AboutComponent extends BaseComponent {
+import { BaseComponent } from '../BaseComponent/BaseComponent.js';
+
+export class ListComponent extends BaseComponent {
     #container = null;
-    #favs = []; //To store favorites
+    #favs = ["Ex1", "Ex2", "Ex3"]; //To store favorites
     constructor() {
         super();
     }
@@ -10,7 +12,8 @@ export class AboutComponent extends BaseComponent {
 
         this.#createContainer();
         this.#setupContainerContent();
-        this.#attachEventListeners();
+        this.#renderTasks();
+        //this.#attachEventListeners();
 
         return this.#container;
     }
@@ -22,7 +25,7 @@ export class AboutComponent extends BaseComponent {
     
     #setupContainerContent() {
         this.element.innerHTML = `
-        <div id="list-container">
+        <div id="list-container" style="overflow-y: scroll;">
             <div class="compare-container" id="outer">
             </div>
         </div>
@@ -30,17 +33,17 @@ export class AboutComponent extends BaseComponent {
     }
 
     #renderTasks() {
-        const favList = this.#container.querySelector('#outer');
-        favList.innerHTML = ''; // Clear existing content
-    
+        //  const favList = this.#container.querySelector('#outer');
+        //  favList.innerHTML = ''; // Clear existing content
+
         this.#favs.forEach(favData => {
             let list = document.createElement("div");
-            list.className += " compare-container";
+            list.className += "compare-container";
             let inner = document.createElement("div");
             inner.className += "list";
             inner.textContent = favData;
             list.appendChild(inner);
-            document.getElementById("list-container").appendChild(list);
+            this.#container.appendChild(list);
         });
       }
     
