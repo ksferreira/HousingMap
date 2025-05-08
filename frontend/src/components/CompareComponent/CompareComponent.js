@@ -1,13 +1,12 @@
 import { BaseComponent } from '../BaseComponent/BaseComponent.js';
-import {TownStatsService} from '../../../../backend/src/services/TownStatsService.js'
 export class CompareComponent extends BaseComponent {
     #container = null;
-    #favs = ["Ex1", "Ex2", "Ex3"]; //To store favorites
-    #townStatsService  = null;
+    #favs = []; //To store favorites
+
 
     constructor() {
         super();
-        this.#townStatsService = new TownStatsService();
+
     }
 
     render() {
@@ -15,9 +14,7 @@ export class CompareComponent extends BaseComponent {
 
         this.#createContainer();
         this.#setupContainerContent();
-        //this.#attachEventListeners();
-        console.log("ren")
-        console.log(this.#townStatsService.fetchFreshStats("Northfield", "MA"))
+        this.#attachEventListeners();
         return this.#container;
     }
     
@@ -27,14 +24,40 @@ export class CompareComponent extends BaseComponent {
     }
     
     #setupContainerContent() {
-        let options = this.#favs.reduce((a, c) => {return a + "<option>"+c+"</option>";}, "")
+        let total = 0
+        if(localStorage.getItem("total")){
+        total = parseInt(localStorage.getItem("total"));
+        }
+        for(let i = 1; i <= total; i++){
+          this.#favs.push(JSON.parse(localStorage.getItem(i)));
+          
+        }
+        let i = 0;
+        let options = this.#favs.reduce((a, c) => {let temp = ""; 
+            if(c){
+                let stateSt = "";
+                let townSt = "";
+                if(c.town !== undefined){
+                  townSt=c.town
+                }
+                if(c.normalizedTown  !== undefined){
+                  townSt=c.normalizedTown
+                }
+                if(c.state  !== undefined){
+                  stateSt=c.state
+                }
+                if(c.normalizedState  !== undefined){
+                  stateSt=c.normalizedState
+                }
+              temp = townSt+", "+stateSt;
+              }; i=i+1; return a + "<option value="+i+">"+temp+"</option>";}, "")
         this.#container.innerHTML = `
         <div class="selectbar">
-            <select class="option" id="o1">
+            <select class="option1" id="o1">
                 <option value="">  Select  </option>
                 `+options+`
             </select>
-            <select class="option" id="o2">
+            <select class="option2" id="o2">
                 <option value="">  Select  </option>
                 `+options+`
             </select>
@@ -49,4 +72,44 @@ export class CompareComponent extends BaseComponent {
         `;
     }
     
+    #attachEventListeners() {
+        const sLeft =  this.#container.querySelector('.option1');
+        const sRight =  this.#container.querySelector('.option2');
+            sLeft.addEventListener('change', () => {
+               if(sLeft.value.length !== 0){
+                const left =  this.#container.querySelector('.left');
+                left.innerHTML = "";
+
+                let     data = this.#favs[sLeft.selectedIndex-1].censusData;
+                
+                left.innerHTML = `
+                <div>Population: ${data.population || 'N/A'}</div><br>
+                <div>Median Income: ${data.medianIncome || 'N/A'}</div><br>
+                <div>Median Home Value: ${data.medianHomeValue || 'N/A'}</div><br>
+                <div>Total Housing Units: ${data.totalHousingUnits || 'N/A'}</div><br>
+                <div>Owner-Occupied Units: ${data.ownerOccupiedUnits || 'N/A'}</div><br>
+                <div>Renter-Occupied Units: ${data.renterOccupiedUnits || 'N/A'}</div><br>
+                <div>Occupied Units: ${data.occupiedUnits || 'N/A'}</div><br>
+                <div>Vacant Units: ${data.vacantUnits || 'N/A'}</div><br>
+            `;
+            }});    
+            sRight.addEventListener('change', () => {
+               if(sRight.value.length !== 0){
+                const right =  this.#container.querySelector('.right');
+                right.innerHTML = "";
+
+                let    data = this.#favs[sRight.selectedIndex-1].censusData;
+                
+                right.innerHTML = `
+               <div>Population: ${data.population || 'N/A'}</div><br>
+                <div>Median Income: ${data.medianIncome || 'N/A'}</div><br>
+                <div>Median Home Value: ${data.medianHomeValue || 'N/A'}</div><br>
+                <div>Total Housing Units: ${data.totalHousingUnits || 'N/A'}</div><br>
+                <div>Owner-Occupied Units: ${data.ownerOccupiedUnits || 'N/A'}</div><br>
+                <div>Renter-Occupied Units: ${data.renterOccupiedUnits || 'N/A'}</div><br>
+                <div>Occupied Units: ${data.occupiedUnits || 'N/A'}</div><br>
+                <div>Vacant Units: ${data.vacantUnits || 'N/A'}</div><br>
+            `;
+            }});    
+    }
 }
