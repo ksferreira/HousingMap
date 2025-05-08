@@ -2,6 +2,7 @@ import express from 'express';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import StatRoutes from './src/routes/StatRoutes.js';
+import cors from 'cors';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = join(__dirname, '..');
@@ -16,6 +17,7 @@ class Server {
     configureMiddleware() {
         this.app.use(express.static(join(rootDir, 'frontend/dist')))
         this.app.use(express.json({ limit: '10mb' }));
+        this.app.use(cors({origin: 'http://localhost:8080'})); // Dev server
     }
 
     setupRoutes() {
