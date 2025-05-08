@@ -3,11 +3,11 @@
 
 Project Description: A website with an integrated map allowing comparisons between neighborhoods (such as counties, congressional districts, etc.) showing home affordability based on utility prices and other comparisons
 
-Problem: It is difficult to find affordable housing.
+Problem: It is difficult to find good housing locations.
 
-Solution: A website allowing comparisons between neighborhoods (such as counties, congressional districts, etc.) showing home affordability based on utility prices and other comparisons.
+Solution: A website allowing comparisons between neighborhoods (such as counties, congressional districts, etc.) showing various data types like total population or vacant housing units.
 
-Key Features: Integrated map, Home page, About page, contact page, A list of favorite locations, a page to compare favorite locations. Displayuing various statisitics using external APIs.
+Key Features: Integrated map, Home page, About page, contact page, A list of favorite locations, a page to compare favorite locations. Displaying various statisitics using external APIs.
 
 Why This Project? Finding somewhere to move is always about more than just the house price, as there are other factors that will contribute to one’s quality of life. That information should be easily accessible.
 
@@ -38,9 +38,8 @@ PORT=3000
       - Routing logic for the frontend
       - Persistent town data stored to prevent overusage of API requests
   - Daniel Kennedy - Role: Assigment Aggregator
-    - Issue 1 : HTTP for Favorite List
-    - Issue 2 : HTTP for Comparison Page
-    - Issue 3 : New functionality for Favorite List - Remove Favorite Button
+    - Issue 1 : Improved Functioality for Comparison Page
+    - Issue 2 : New functionality for Favorite List - Remove Favorite Button
   - John Hankwitz- Role: Quality Assurance
     - Issue 1 :
     - Issue 2 : 
