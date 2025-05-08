@@ -82,6 +82,11 @@ export class AppControllerComponent {
         launchMapButton.addEventListener('click', () => {
             this.#hub.publish('LaunchMap', {});
         });
+        const mapButton = document.getElementById("map-button")
+        mapButton.addEventListener("click", () => {
+            console.log("clicked")
+            this.#hub.publish('LaunchMap', {});
+        })
         const favButton = document.getElementById("list-button")
         favButton.addEventListener("click", () => {
             console.log("clicked")
