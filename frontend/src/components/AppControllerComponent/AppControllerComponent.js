@@ -1,11 +1,18 @@
 import { EventHub } from '../../events/EventHub.js';
 import { MapComponent } from '../MapComponent/MapComponent.js';
 import { SidebarComponent } from '../SidebarComponent/SidebarComponent.js';
+import { ListComponent } from '../ListComponent/ListComponent.js';
+import { AboutComponent } from '../AboutComponent/AboutComponent.js';
+import { ContactComponent } from '../ContactComponent/ContactComponent.js';
+import { CompareComponent } from '../CompareComponent/CompareComponent.js';
 export class AppControllerComponent {
     #container = null;
     #mapComponent = null;
     #hub = null;
-
+    #aboutComponent = null;
+    #contactComponent = null;
+    #listComponent = null;
+    #compareComponent = null;
     #sidebarLeftComponent = null;
     #sidebarRightComponent = null;
 
@@ -16,6 +23,10 @@ export class AppControllerComponent {
         this.#attachEventListeners();
 
         this.#mapComponent = new MapComponent();
+        this.#listComponent = new ListComponent();
+        this.#aboutComponent = new AboutComponent();
+        this.#contactComponent = new ContactComponent();
+        this.#compareComponent = new CompareComponent();
         this.#sidebarLeftComponent = new SidebarComponent({
             position: 'left',
             data: null
@@ -54,11 +65,42 @@ export class AppControllerComponent {
         this.#hub.subscribe('LaunchMap', taskData => {
             this.#launchMap();
         });
-
+        this.#hub.subscribe('LaunchFav', taskData => {
+            this.#launchFav();
+        });
+        this.#hub.subscribe('LaunchAbout', taskData => {
+            this.#launchAbout();
+        });
+        this.#hub.subscribe('LaunchContact', taskData => {
+            this.#launchContact();
+        });
+        this.#hub.subscribe('LaunchCompare', taskData => {
+            this.#launchCompare();
+        });
         const launchMapButton = this.#container.querySelector('.btn');
         launchMapButton.addEventListener('click', () => {
             this.#hub.publish('LaunchMap', {});
         });
+        const favButton = document.getElementById("list-button")
+        favButton.addEventListener("click", () => {
+            console.log("clicked")
+            this.#hub.publish('LaunchFav', {});
+        })
+        const aboutButton = document.getElementById("about-button")
+        aboutButton.addEventListener("click", () => {
+            console.log("clicked about")
+            this.#hub.publish('LaunchAbout', {});
+        })
+        const contactButton = document.getElementById("contact-button")
+        contactButton.addEventListener("click", () => {
+            console.log("clicked")
+            this.#hub.publish('LaunchContact', {});
+        })
+        const compareButton = document.getElementById("compare-button")
+        compareButton.addEventListener("click", () => {
+            console.log("clicked")
+            this.#hub.publish('LaunchCompare', {});
+        })
     }
 
     #launchMap() {
@@ -88,5 +130,54 @@ export class AppControllerComponent {
         setTimeout(() => {
             window.dispatchEvent(new Event('resize'));
         }, 200);
+    }
+     #launchFav() {
+        console.log('Launching list');
+
+        // Clear the container
+        this.#container.innerHTML = '';
+        
+        // Add the map view class to the container
+        this.#container.classList.add('list-container');
+        
+        // Append the map component
+        const listElement = this.#listComponent.render();
+        this.#container.appendChild(listElement);
+    }
+    #launchAbout() {
+        console.log('Launching about');
+
+        // Clear the container
+        this.#container.innerHTML = '';
+        
+        this.#container.classList.add('about-container');
+        
+        // Append the about component
+        const aboutElement = this.#aboutComponent.render();
+        this.#container.appendChild(aboutElement);
+    }
+    #launchContact() {
+        console.log('Launching contact');
+
+        // Clear the container
+        this.#container.innerHTML = '';
+        
+        this.#container.classList.add('contact-container');
+        
+        // Append the contact component
+        const contactElement = this.#contactComponent.render();
+        this.#container.appendChild(contactElement);
+    }
+    #launchCompare() {
+        console.log('Launching compare');
+
+        // Clear the container
+        this.#container.innerHTML = '';
+        
+        this.#container.classList.add('compare-container');
+        
+        // Append the compare component
+        const compareElement = this.#compareComponent.render();
+        this.#container.appendChild(compareElement);
     }
 }
