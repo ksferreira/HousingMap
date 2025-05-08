@@ -1,3 +1,5 @@
+import { BaseComponent } from '../BaseComponent/BaseComponent.js';
+
 export class AboutComponent extends BaseComponent {
     #container = null;
     
@@ -10,6 +12,7 @@ export class AboutComponent extends BaseComponent {
 
         this.#createContainer();
         this.#setupContainerContent();
+        console.log(this.element.innerHTML)
         // this.#attachEventListeners();
 
         return this.#container;
@@ -17,11 +20,11 @@ export class AboutComponent extends BaseComponent {
     
     #createContainer() {
         this.#container = document.createElement('div');
-        this.#container.classList.add('hero-container');
+        this.#container.classList.add('about-container');
     }
     
     #setupContainerContent() {
-        this.element.innerHTML = `
+        this.#container.innerHTML = `
         <div class="hero">
             <h1>About</h1>
             <p>This site was built for the purpose of helping people find affordable housing by helping them 
@@ -34,5 +37,6 @@ export class AboutComponent extends BaseComponent {
         </div>
         `;
     }
+    
     
 }
