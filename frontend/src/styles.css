@@ -372,10 +372,17 @@ body {
 .compare-container {
     display: flex;
     flex-direction: column;
+    width: 60%;
     margin-top: 70px;
     align-items: center;
 }
-
+.option{
+    width: 30%;
+    background-color: var(--bg-light    );
+    padding: var(--spacing-md);
+    border-radius: 15px;
+    text-align: center;
+}
 .fav {
     padding: var(--spacing-md);
     background-color: var(--primary-color);
